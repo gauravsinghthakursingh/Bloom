@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand-primary: #2E7D32;
+  --color-brand-secondary: #66BB6A;
+  --color-brand-tertiary: #A5D6A7;
+  --color-brand-surface: #F1F8E9;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    @apply font-sans overflow-x-hidden bg-[#FAFCF9] text-gray-900 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-gray-950 text-gray-50;
+  }
+}
+
+@layer utilities {
+  .safe-area-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 64px);
+  }
+
+  .animate-bounce-short {
+    animation: bounce-short 0.5s ease-in-out;
+  }
+
+  @keyframes bounce-short {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .green-gradient {
+    @apply bg-gradient-to-br from-[#2E7D32] to-[#66BB6A];
+  }
+
+  .soft-shadow {
+    box-shadow: 0 10px 30px -10px rgba(46, 125, 50, 0.1);
+  }
+
+  .rounded-4xl {
+    border-radius: 2rem;
+  }
+}

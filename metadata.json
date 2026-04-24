@@ -1,0 +1,7 @@
+{
+  "name": "GreenBloom",
+  "description": "A premium, eco-friendly e-commerce app for selling high-quality seeds, indoor and outdoor plants, and flowering plants.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
