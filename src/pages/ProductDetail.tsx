@@ -8,6 +8,7 @@ import { reviewService } from '../services/reviewService';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
+import { Skeleton } from '../components/ui/Skeleton';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { cn } from '../lib/utils';
@@ -20,6 +21,7 @@ export const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(true);
   const { addToCart } = useCart();
   const { user } = useAuth();
 
@@ -60,6 +62,11 @@ export const ProductDetail = () => {
     ? product.images 
     : [product.imageUrl];
 
+  const handleImageChange = (img: string) => {
+    setActiveImage(img);
+    setImageLoading(true);
+  };
+
   return (
     <div className="space-y-8">
       <button 
@@ -78,6 +85,9 @@ export const ProductDetail = () => {
             animate={{ opacity: 1, x: 0 }}
             className="relative aspect-square rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-800 transition-colors shadow-sm"
           >
+            {imageLoading && (
+              <Skeleton className="absolute inset-0 w-full h-full rounded-none" />
+            )}
             <AnimatePresence mode="wait">
               <motion.img 
                 key={activeImage}
@@ -86,7 +96,11 @@ export const ProductDetail = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="w-full h-full object-cover"
+                onLoad={() => setImageLoading(false)}
+                className={cn(
+                  "w-full h-full object-cover transition-opacity duration-300",
+                  imageLoading ? "opacity-0" : "opacity-100"
+                )}
                 referrerPolicy="no-referrer"
               />
             </AnimatePresence>
@@ -106,7 +120,7 @@ export const ProductDetail = () => {
               {galleryImages.map((img, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setActiveImage(img)}
+                  onClick={() => handleImageChange(img)}
                   className={cn(
                     "relative w-24 h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all",
                     activeImage === img ? "border-green-600 scale-105 shadow-md z-10" : "border-transparent opacity-70 hover:opacity-100"
